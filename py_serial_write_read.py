@@ -5,7 +5,7 @@ import threading
 
 
 
-PORT = "COM3" #윈도우
+PORT = "/dev/ttyUSB0" 
 # PORT = "/dev/ttyUSB0" #리눅스, $ sudo chmod 666 /dev/ttyUSB0
 BAUDRATE = 9600
 # BAUDRATE = 115200
@@ -48,18 +48,21 @@ def writeSerial():
 
     while True:
 
-        os.system('cls')
+        os.system('clear')
         msg = input('각도를 입력하세요 (0-180)(종료:q): \n')     
         if msg == 'q':
             break
 
+        # 음수표기로 '-'는 문자라 isdigit() 결과가 False
+        # alfl '-'표기를 지우고 숫자만 남겨 isdigit()이 True라면 숫자
         if not msg.lstrip('-').isdigit():
             print('숫자가 아닙니다')
             time.sleep(2)
             continue
-
+        # 문자형을 숫자형으로 변경
         angle = int(msg)
 
+        # 숫자형이기에 숫자로써 범위지정이 가능
         if 0 > angle or angle > 180:
             print('유효 각도를 벗어나 다시 입력')
             time.sleep(2)
